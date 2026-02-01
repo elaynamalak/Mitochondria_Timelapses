@@ -17,6 +17,10 @@
       margin: 20px;
     }
 
+    .category-buttons {
+      margin-bottom: 20px;
+    }
+
     .timepoint-buttons, #buttons {
       margin-bottom: 15px;
     }
@@ -38,10 +42,10 @@
 
     .video-container {
       width: 90vw;
-      max-width: 450px; /* max width and height to make it roughly square */
+      max-width: 450px;
       aspect-ratio: 1 / 1;
       margin-bottom: 20px;
-      display: none; /* hidden by default */
+      display: none;
     }
 
     .video-container iframe {
@@ -52,158 +56,180 @@
 </head>
 
 <body>
+
   <h1>3D Timelapse Models with Videos</h1>
 
-  <!-- Timepoint buttons -->
-  <div class="timepoint-buttons" id="timepoint-buttons"></div>
-
-  <!-- 3D Model Viewer -->
-  <model-viewer
-    id="viewer"
-    src=""
-    alt="3D model"
-    camera-controls
-    auto-rotate
-    shadow-intensity="1"
-    exposure="1"
-    touch-action="pan-y">
-  </model-viewer>
-
-  <!-- Video containers -->
-  <div id="video1" class="video-container">
-    <iframe src="https://www.youtube.com/embed/rIRaMQCrBYU" title="24HR 300cis" frameborder="0" allowfullscreen></iframe>
+  <!-- ALWAYS VISIBLE CATEGORY SWITCH -->
+  <div class="category-buttons">
+    <button onclick="showCisplatin()">Cisplatin Treated</button>
+    <button onclick="showControl()">Control Examples</button>
   </div>
 
-  <div id="video2" class="video-container">
-    <iframe src="https://www.youtube.com/embed/E14wngHJKH4" title="24HR 30cis" frameborder="0" allowfullscreen></iframe>
-  </div>
+  <!-- ===================== -->
+  <!-- CISPLATIN SECTION -->
+  <!-- ===================== -->
+  <div id="cisplatin-section">
 
-  <div id="video3" class="video-container">
-    <iframe src="https://www.youtube.com/embed/J3KHXilgRpw" title="24HR 100cis" frameborder="0" allowfullscreen></iframe>
-  </div>
+    <div class="timepoint-buttons" id="timepoint-buttons"></div>
 
-<div id="video0-1" class="video-container">
-  <iframe src="https://www.youtube.com/embed/PPgnb7jVyTw"
-          title="0HR 30 µM"
-          frameborder="0"
-          allowfullscreen>
-  </iframe>
-</div>
+    <model-viewer
+      id="viewer"
+      src=""
+      alt="3D model"
+      camera-controls
+      auto-rotate
+      shadow-intensity="1"
+      exposure="1"
+      touch-action="pan-y">
+    </model-viewer>
 
-<div id="video0-2" class="video-container">
-  <iframe src="https://www.youtube.com/embed/V-o-g-r7VAw"
-          title="0HR 100 µM"
-          frameborder="0"
-          allowfullscreen>
-  </iframe>
-</div>
+    <!-- Videos -->
+    <div id="video1" class="video-container">
+      <iframe src="https://www.youtube.com/embed/rIRaMQCrBYU" allowfullscreen></iframe>
+    </div>
 
-<div id="video0-3" class="video-container">
-  <iframe src="https://www.youtube.com/embed/vyoOUdkt2g4"
-          title="0HR 300 µM"
-          frameborder="0"
-          allowfullscreen>
-  </iframe>
-</div>
+    <div id="video2" class="video-container">
+      <iframe src="https://www.youtube.com/embed/E14wngHJKH4" allowfullscreen></iframe>
+    </div>
 
-<div id="video6-1" class="video-container">
-  <iframe src="https://www.youtube.com/embed/0tYk-JrA_eU"
-          title="6HR 30 µM"
-          frameborder="0"
-          allowfullscreen>
-  </iframe>
-</div>
+    <div id="video3" class="video-container">
+      <iframe src="https://www.youtube.com/embed/J3KHXilgRpw" allowfullscreen></iframe>
+    </div>
 
-  <div id="video6-2" class="video-container">
-  <iframe src="https://www.youtube.com/embed/7HaoWD1l95Q"
-          title="6HR 100 µM"
-          frameborder="0"
-          allowfullscreen>
-  </iframe>
-</div>
+    <div id="video0-1" class="video-container">
+      <iframe src="https://www.youtube.com/embed/PPgnb7jVyTw" allowfullscreen></iframe>
+    </div>
 
-  <div id="video6-3" class="video-container">
-  <iframe
-    src="https://www.youtube.com/embed/SXqw-uGKpcs"
-    title="6HR 300 µM"
-    frameborder="0"
-    allowfullscreen>
-  </iframe>
-</div>
+    <div id="video0-2" class="video-container">
+      <iframe src="https://www.youtube.com/embed/V-o-g-r7VAw" allowfullscreen></iframe>
+    </div>
 
-  
-  <!-- Model buttons -->
-  <div id="buttons"></div>
+    <div id="video0-3" class="video-container">
+      <iframe src="https://www.youtube.com/embed/vyoOUdkt2g4" allowfullscreen></iframe>
+    </div>
 
-  <script>
-    const viewer = document.getElementById('viewer');
+    <div id="video6-1" class="video-container">
+      <iframe src="https://www.youtube.com/embed/0tYk-JrA_eU" allowfullscreen></iframe>
+    </div>
 
-    // Nested structure: timepoints → models
-    const timepoints = {
-      "0HR": [
-        { name: "models/0HR_30cis_timelapse_z.glb", label: "30 µM", videoId: "video0-1" },
-        { name: "models/0HR_100cis_timelapse_z.glb", label: "100 µM", videoId: "video0-2" },
-        { name: "models/0HR_300cis_timelapse_z.glb", label: "300 µM", videoId: "video0-3" }
-      ],
-      "6HR": [
-        { name: "models/6HR_30cis_timelapse_z.glb", label: "30 µM", videoId: "video6-1" },
-        { name: "models/6HR_100cis_timelapse_z.glb", label: "100 µM", videoId: "video6-2" },
-        { name: "models/6HR_300cis_timelapse_z.glb", label: "300 µM", videoId: "video6-3" }
-      ],
-      "24HR": [
-        { name: "models/24HR_30cis_timelapse_z.glb", label: "30 µM", videoId: "video1" },
-        { name: "models/24HR_100cis_timelapse_z.glb", label: "100 µM", videoId: "video2" },
-        { name: "models/24HR_300cis_timelapse_z.glb", label: "300 µM", videoId: "video3" }
-      ]
-    };
+    <div id="video6-2" class="video-container">
+      <iframe src="https://www.youtube.com/embed/7HaoWD1l95Q" allowfullscreen></iframe>
+    </div>
 
-    let currentTimepoint = "24HR"; // default selected timepoint
+    <div id="video6-3" class="video-container">
+      <iframe src="https://www.youtube.com/embed/SXqw-uGKpcs" allowfullscreen></iframe>
+    </div>
 
-    // Create timepoint buttons
-    const tpButtonsDiv = document.getElementById('timepoint-buttons');
-    Object.keys(timepoints).forEach(tp => {
-      const btn = document.createElement('button');
-      btn.textContent = tp;
-      btn.addEventListener('click', () => selectTimepoint(tp));
-      tpButtonsDiv.appendChild(btn);
-    });
+    <div id="buttons"></div>
 
-    // Update model buttons based on selected timepoint
-    const buttonsDiv = document.getElementById('buttons');
-    function updateModelButtons() {
-      buttonsDiv.innerHTML = ''; // clear previous buttons
-      timepoints[currentTimepoint].forEach(model => {
+    <script>
+      const viewer = document.getElementById('viewer');
+
+      const timepoints = {
+        "0HR": [
+          { name: "models/0HR_30cis_timelapse_z.glb", label: "30 µM", videoId: "video0-1" },
+          { name: "models/0HR_100cis_timelapse_z.glb", label: "100 µM", videoId: "video0-2" },
+          { name: "models/0HR_300cis_timelapse_z.glb", label: "300 µM", videoId: "video0-3" }
+        ],
+        "6HR": [
+          { name: "models/6HR_30cis_timelapse_z.glb", label: "30 µM", videoId: "video6-1" },
+          { name: "models/6HR_100cis_timelapse_z.glb", label: "100 µM", videoId: "video6-2" },
+          { name: "models/6HR_300cis_timelapse_z.glb", label: "300 µM", videoId: "video6-3" }
+        ],
+        "24HR": [
+          { name: "models/24HR_30cis_timelapse_z.glb", label: "30 µM", videoId: "video1" },
+          { name: "models/24HR_100cis_timelapse_z.glb", label: "100 µM", videoId: "video2" },
+          { name: "models/24HR_300cis_timelapse_z.glb", label: "300 µM", videoId: "video3" }
+        ]
+      };
+
+      let currentTimepoint = "24HR";
+
+      const tpButtonsDiv = document.getElementById('timepoint-buttons');
+      Object.keys(timepoints).forEach(tp => {
         const btn = document.createElement('button');
-        btn.textContent = model.label;
-        btn.addEventListener('click', () => changeModel(model.name, model.videoId));
-        buttonsDiv.appendChild(btn);
+        btn.textContent = tp;
+        btn.onclick = () => selectTimepoint(tp);
+        tpButtonsDiv.appendChild(btn);
       });
+
+      const buttonsDiv = document.getElementById('buttons');
+
+      function updateModelButtons() {
+        buttonsDiv.innerHTML = '';
+        timepoints[currentTimepoint].forEach(model => {
+          const btn = document.createElement('button');
+          btn.textContent = model.label;
+          btn.onclick = () => changeModel(model.name, model.videoId);
+          buttonsDiv.appendChild(btn);
+        });
+      }
+
+      function selectTimepoint(tp) {
+        currentTimepoint = tp;
+        updateModelButtons();
+        const first = timepoints[tp][0];
+        changeModel(first.name, first.videoId);
+      }
+
+      function changeModel(modelPath, videoId) {
+        viewer.src = modelPath;
+        document.querySelectorAll('.video-container').forEach(v => v.style.display = 'none');
+        document.getElementById(videoId).style.display = 'block';
+      }
+
+      selectTimepoint(currentTimepoint);
+    </script>
+
+  </div>
+
+  <!-- ===================== -->
+  <!-- CONTROL SECTION -->
+  <!-- ===================== -->
+<!-- ===================== -->
+<!-- CONTROL SECTION -->
+<!-- ===================== -->
+<div id="control-section" style="display:none;">
+
+  <div class="video-container" style="display:block;">
+    <iframe
+      src="https://www.youtube.com/embed/Bl_DnE48yRM"
+      title="Control Fusion"
+      allowfullscreen>
+    </iframe>
+  </div>
+
+  <div class="video-container" style="display:block;">
+    <iframe
+      src="https://www.youtube.com/embed/DldJT74aJJ4"
+      title="Control Fission"
+      allowfullscreen>
+    </iframe>
+  </div>
+
+</div>
+
+
+  <!-- ===================== -->
+  <!-- SECTION SWITCHING -->
+  <!-- ===================== -->
+  <script>
+    const cisplatinSection = document.getElementById('cisplatin-section');
+    const controlSection = document.getElementById('control-section');
+
+    function showCisplatin() {
+      cisplatinSection.style.display = 'block';
+      controlSection.style.display = 'none';
     }
 
-    // Select a timepoint
-    function selectTimepoint(tp) {
-      currentTimepoint = tp;
-      updateModelButtons();
-      // Automatically load the first model of the selected timepoint
-      const firstModel = timepoints[tp][0];
-      changeModel(firstModel.name, firstModel.videoId);
+    function showControl() {
+      cisplatinSection.style.display = 'none';
+      controlSection.style.display = 'block';
     }
 
-    // Change model + video
-    function changeModel(modelPath, videoId) {
-      viewer.src = modelPath;
-
-      // Hide all videos
-      document.querySelectorAll('.video-container').forEach(v => v.style.display = 'none');
-
-      // Show selected video
-      const selectedVideo = document.getElementById(videoId);
-      if (selectedVideo) selectedVideo.style.display = 'block';
-    }
-
-    // Initialize
-    selectTimepoint(currentTimepoint);
+    // default view
+    showCisplatin();
   </script>
+
 </body>
 </html>
-
