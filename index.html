@@ -21,8 +21,13 @@
       margin-bottom: 20px;
     }
 
-    .timepoint-buttons, #buttons {
-      margin-bottom: 15px;
+    .label {
+      font-weight: bold;
+      margin: 10px 0 5px;
+    }
+
+    .timepoint-buttons, .dose-buttons {
+      margin-bottom: 10px;
     }
 
     button {
@@ -70,8 +75,15 @@
   <!-- ===================== -->
   <div id="cisplatin-section">
 
+    <!-- Timepoint Buttons -->
+    <div class="label">Timepoint</div>
     <div class="timepoint-buttons" id="timepoint-buttons"></div>
 
+    <!-- Dose Buttons -->
+    <div class="label">Dose</div>
+    <div class="dose-buttons" id="buttons"></div>
+
+    <!-- 3D Model Viewer -->
     <model-viewer
       id="viewer"
       src=""
@@ -119,8 +131,6 @@
     <div id="video6-3" class="video-container">
       <iframe src="https://www.youtube.com/embed/SXqw-uGKpcs" allowfullscreen></iframe>
     </div>
-
-    <div id="buttons"></div>
 
     <script>
       const viewer = document.getElementById('viewer');
@@ -186,29 +196,25 @@
   <!-- ===================== -->
   <!-- CONTROL SECTION -->
   <!-- ===================== -->
-<!-- ===================== -->
-<!-- CONTROL SECTION -->
-<!-- ===================== -->
-<div id="control-section" style="display:none;">
+  <div id="control-section" style="display:none;">
 
-  <div class="video-container" style="display:block;">
-    <iframe
-      src="https://www.youtube.com/embed/Bl_DnE48yRM"
-      title="Control Fusion"
-      allowfullscreen>
-    </iframe>
+    <div class="video-container" style="display:block;">
+      <iframe
+        src="https://www.youtube.com/embed/Bl_DnE48yRM"
+        title="Control Fusion"
+        allowfullscreen>
+      </iframe>
+    </div>
+
+    <div class="video-container" style="display:block;">
+      <iframe
+        src="https://www.youtube.com/embed/DldJT74aJJ4"
+        title="Control Fission"
+        allowfullscreen>
+      </iframe>
+    </div>
+
   </div>
-
-  <div class="video-container" style="display:block;">
-    <iframe
-      src="https://www.youtube.com/embed/DldJT74aJJ4"
-      title="Control Fission"
-      allowfullscreen>
-    </iframe>
-  </div>
-
-</div>
-
 
   <!-- ===================== -->
   <!-- SECTION SWITCHING -->
@@ -227,7 +233,6 @@
       controlSection.style.display = 'block';
     }
 
-    // default view
     showCisplatin();
   </script>
 
