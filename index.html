@@ -4,10 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>3D Timelapse Models with Videos</title>
-
 <!-- Google Model Viewer -->
 <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-
 <style>
 body {
   display: flex;
@@ -15,30 +13,56 @@ body {
   align-items: center;
   font-family: sans-serif;
   margin: 20px;
+  background: #fafafa;
 }
+
+h1 {
+  margin-bottom: 15px;
+}
+
 .category-buttons {
   margin-bottom: 20px;
 }
+
 .label {
   font-weight: bold;
   margin: 10px 0 5px;
 }
+
 .timepoint-buttons, .dose-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   margin-bottom: 10px;
 }
+
 button {
   margin: 0 5px;
   padding: 8px 12px;
   font-size: 1rem;
   cursor: pointer;
+  border-radius: 6px;
+  border: 2px solid #bbb;
+  background: #e6e6e6;
+  color: #222;
 }
+
+/* ACTIVE BUTTON */
+button.active {
+  background: #2563eb;
+  color: #fff;
+  border-color: #2563eb;
+}
+
 model-viewer {
   width: 90vw;
   max-width: 800px;
   height: 600px;
   margin-bottom: 20px;
   background-color: #f0f0f0;
+  border-radius: 10px;
 }
+
 .video-container {
   width: 90vw;
   max-width: 450px;
@@ -46,27 +70,37 @@ model-viewer {
   margin-bottom: 20px;
   display: none;
 }
+
 .video-container iframe {
   width: 100%;
   height: 100%;
+  border-radius: 10px;
+}
+
+@media (max-width: 768px) {
+  model-viewer {
+    height: 400px;
+  }
+  button {
+    padding: 10px 14px;
+    font-size: 1.05rem;
+  }
 }
 </style>
 </head>
 <body>
-
 <h1>3D Timelapse Models with Videos</h1>
 
 <!-- ALWAYS VISIBLE CATEGORY SWITCH -->
 <div class="category-buttons">
-  <button onclick="showCisplatin()">Cisplatin Treated</button>
-  <button onclick="showControl()">Control Examples</button>
+  <button id="cisBtn">Cisplatin Treated</button>
+  <button id="ctrlBtn">Control Examples</button>
 </div>
 
 <!-- ===================== -->
 <!-- CISPLATIN SECTION -->
 <!-- ===================== -->
 <div id="cisplatin-section">
-
   <!-- Timepoint Buttons -->
   <div class="label">Timepoint</div>
   <div class="timepoint-buttons" id="timepoint-buttons"></div>
@@ -80,100 +114,33 @@ model-viewer {
   </model-viewer>
 
   <!-- Videos -->
-  <div id="video1" class="video-container">
-    <iframe src="https://www.youtube.com/embed/rIRaMQCrBYU" allowfullscreen></iframe>
-  </div>
-
-  <div id="video2" class="video-container">
-    <iframe src="https://www.youtube.com/embed/E14wngHJKH4" allowfullscreen></iframe>
-  </div>
-
-  <div id="video3" class="video-container">
-    <iframe src="https://www.youtube.com/embed/J3KHXilgRpw" allowfullscreen></iframe>
-  </div>
-
   <div id="video0-1" class="video-container">
     <iframe src="https://www.youtube.com/embed/PPgnb7jVyTw" allowfullscreen></iframe>
   </div>
-
   <div id="video0-2" class="video-container">
     <iframe src="https://www.youtube.com/embed/V-o-g-r7VAw" allowfullscreen></iframe>
   </div>
-
   <div id="video0-3" class="video-container">
     <iframe src="https://www.youtube.com/embed/vyoOUdkt2g4" allowfullscreen></iframe>
   </div>
-
   <div id="video6-1" class="video-container">
     <iframe src="https://www.youtube.com/embed/0tYk-JrA_eU" allowfullscreen></iframe>
   </div>
-
   <div id="video6-2" class="video-container">
     <iframe src="https://www.youtube.com/embed/7HaoWD1l95Q" allowfullscreen></iframe>
   </div>
-
   <div id="video6-3" class="video-container">
     <iframe src="https://www.youtube.com/embed/SXqw-uGKpcs" allowfullscreen></iframe>
   </div>
-
-  <script>
-    const viewer = document.getElementById('viewer');
-    const timepoints = {
-      "0HR": [
-        { name: "models/0HR_30cis_timelapse_z.glb", label: "30 µM", videoId: "video0-1" },
-        { name: "models/0HR_100cis_timelapse_z.glb", label: "100 µM", videoId: "video0-2" },
-        { name: "models/0HR_300cis_timelapse_z.glb", label: "300 µM", videoId: "video0-3" }
-      ],
-      "6HR": [
-        { name: "models/6HR_30cis_timelapse_z.glb", label: "30 µM", videoId: "video6-1" },
-        { name: "models/6HR_100cis_timelapse_z.glb", label: "100 µM", videoId: "video6-2" },
-        { name: "models/6HR_300cis_timelapse_z.glb", label: "300 µM", videoId: "video6-3" }
-      ],
-      "24HR": [
-        { name: "models/24HR_30cis_timelapse_z.glb", label: "30 µM", videoId: "video1" },
-        { name: "models/24HR_100cis_timelapse_z.glb", label: "100 µM", videoId: "video2" },
-        { name: "models/24HR_300cis_timelapse_z.glb", label: "300 µM", videoId: "video3" }
-      ]
-    };
-
-    let currentTimepoint = "24HR";
-
-    const tpButtonsDiv = document.getElementById('timepoint-buttons');
-    Object.keys(timepoints).forEach(tp => {
-      const btn = document.createElement('button');
-      btn.textContent = tp;
-      btn.onclick = () => selectTimepoint(tp);
-      tpButtonsDiv.appendChild(btn);
-    });
-
-    const buttonsDiv = document.getElementById('buttons');
-
-    function updateModelButtons() {
-      buttonsDiv.innerHTML = '';
-      timepoints[currentTimepoint].forEach(model => {
-        const btn = document.createElement('button');
-        btn.textContent = model.label;
-        btn.onclick = () => changeModel(model.name, model.videoId);
-        buttonsDiv.appendChild(btn);
-      });
-    }
-
-    function selectTimepoint(tp) {
-      currentTimepoint = tp;
-      updateModelButtons();
-      const first = timepoints[tp][0];
-      changeModel(first.name, first.videoId);
-    }
-
-    function changeModel(modelPath, videoId) {
-      viewer.src = modelPath;
-      document.querySelectorAll('.video-container').forEach(v => v.style.display = 'none');
-      document.getElementById(videoId).style.display = 'block';
-    }
-
-    selectTimepoint(currentTimepoint);
-  </script>
-
+  <div id="video1" class="video-container">
+    <iframe src="https://www.youtube.com/embed/rIRaMQCrBYU" allowfullscreen></iframe>
+  </div>
+  <div id="video2" class="video-container">
+    <iframe src="https://www.youtube.com/embed/E14wngHJKH4" allowfullscreen></iframe>
+  </div>
+  <div id="video3" class="video-container">
+    <iframe src="https://www.youtube.com/embed/J3KHXilgRpw" allowfullscreen></iframe>
+  </div>
 </div>
 
 <!-- ===================== -->
@@ -181,12 +148,10 @@ model-viewer {
 <!-- ===================== -->
 <div id="control-section" style="display:none;">
   <div class="video-container" style="display:block;">
-    <iframe src="https://www.youtube.com/embed/Bl_DnE48yRM" title="Control Fusion" allowfullscreen>
-    </iframe>
+    <iframe src="https://www.youtube.com/embed/Bl_DnE48yRM" title="Control Fusion" allowfullscreen></iframe>
   </div>
   <div class="video-container" style="display:block;">
-    <iframe src="https://www.youtube.com/embed/DldJT74aJJ4" title="Control Fission" allowfullscreen>
-    </iframe>
+    <iframe src="https://www.youtube.com/embed/DldJT74aJJ4" title="Control Fission" allowfullscreen></iframe>
   </div>
 </div>
 
@@ -194,21 +159,92 @@ model-viewer {
 <!-- SECTION SWITCHING -->
 <!-- ===================== -->
 <script>
-  const cisplatinSection = document.getElementById('cisplatin-section');
-  const controlSection = document.getElementById('control-section');
+const viewer = document.getElementById('viewer');
+const cisplatinSection = document.getElementById('cisplatin-section');
+const controlSection = document.getElementById('control-section');
 
-  function showCisplatin() {
-    cisplatinSection.style.display = 'block';
-    controlSection.style.display = 'none';
-  }
+const cisBtn = document.getElementById('cisBtn');
+const ctrlBtn = document.getElementById('ctrlBtn');
 
-  function showControl() {
-    cisplatinSection.style.display = 'none';
-    controlSection.style.display = 'block';
-  }
+const tpButtonsDiv = document.getElementById('timepoint-buttons');
+const doseButtonsDiv = document.getElementById('buttons');
 
-  showCisplatin();
+const timepoints = {
+  "0HR": [
+    { name: "models/0HR_30cis_timelapse_z.glb", label: "30 µM", videoId: "video0-1" },
+    { name: "models/0HR_100cis_timelapse_z.glb", label: "100 µM", videoId: "video0-2" },
+    { name: "models/0HR_300cis_timelapse_z.glb", label: "300 µM", videoId: "video0-3" }
+  ],
+  "6HR": [
+    { name: "models/6HR_30cis_timelapse_z.glb", label: "30 µM", videoId: "video6-1" },
+    { name: "models/6HR_100cis_timelapse_z.glb", label: "100 µM", videoId: "video6-2" },
+    { name: "models/6HR_300cis_timelapse_z.glb", label: "300 µM", videoId: "video6-3" }
+  ],
+  "24HR": [
+    { name: "models/24HR_30cis_timelapse_z.glb", label: "30 µM", videoId: "video1" },
+    { name: "models/24HR_100cis_timelapse_z.glb", label: "100 µM", videoId: "video2" },
+    { name: "models/24HR_300cis_timelapse_z.glb", label: "300 µM", videoId: "video3" }
+  ]
+};
+
+let currentTimepoint = "0HR";
+
+// Category buttons
+cisBtn.onclick = () => {
+  cisplatinSection.style.display = "block";
+  controlSection.style.display = "none";
+  cisBtn.classList.add("active");
+  ctrlBtn.classList.remove("active");
+};
+
+ctrlBtn.onclick = () => {
+  cisplatinSection.style.display = "none";
+  controlSection.style.display = "block";
+  ctrlBtn.classList.add("active");
+  cisBtn.classList.remove("active");
+};
+
+// Timepoint buttons
+Object.keys(timepoints).forEach(tp => {
+  const btn = document.createElement('button');
+  btn.textContent = tp;
+  btn.onclick = () => {
+    document.querySelectorAll('.timepoint-buttons button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentTimepoint = tp;
+    renderDoseButtons();
+  };
+  tpButtonsDiv.appendChild(btn);
+});
+
+// Dose buttons
+function renderDoseButtons() {
+  doseButtonsDiv.innerHTML = '';
+  timepoints[currentTimepoint].forEach((model, idx) => {
+    const btn = document.createElement('button');
+    btn.textContent = model.label;
+    btn.onclick = () => {
+      document.querySelectorAll('.dose-buttons button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      setModel(model.name, model.videoId);
+    };
+    if (idx === 0) btn.classList.add('active');
+    doseButtonsDiv.appendChild(btn);
+  });
+
+  setModel(timepoints[currentTimepoint][0].name, timepoints[currentTimepoint][0].videoId);
+}
+
+function setModel(src, videoId) {
+  viewer.src = src;
+  document.querySelectorAll('.video-container').forEach(v => v.style.display = 'none');
+  document.getElementById(videoId).style.display = 'block';
+}
+
+// initial state
+cisBtn.classList.add("active");
+document.querySelectorAll('.timepoint-buttons button')[0].classList.add('active');
+renderDoseButtons();
 </script>
-
 </body>
 </html>
