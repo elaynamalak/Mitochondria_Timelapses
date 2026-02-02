@@ -29,7 +29,7 @@ h1 {
   margin: 10px 0 5px;
 }
 
-.timepoint-buttons, .dose-buttons {
+.timepoint-buttons, .dose-buttons, .control-buttons {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -107,13 +107,13 @@ model-viewer {
 
   <!-- Dose Buttons -->
   <div class="label">Dose</div>
-  <div class="dose-buttons" id="buttons"></div>
+  <div class="dose-buttons" id="dose-buttons"></div>
 
   <!-- 3D Model Viewer -->
   <model-viewer id="viewer" src="" alt="3D model" camera-controls auto-rotate shadow-intensity="1" exposure="1" touch-action="pan-y">
   </model-viewer>
 
-  <!-- Videos -->
+  <!-- Cisplatin Videos -->
   <div id="video0-1" class="video-container">
     <iframe src="https://www.youtube.com/embed/PPgnb7jVyTw" allowfullscreen></iframe>
   </div>
@@ -147,17 +147,21 @@ model-viewer {
 <!-- CONTROL SECTION -->
 <!-- ===================== -->
 <div id="control-section" style="display:none;">
-  <div class="video-container" style="display:block;">
+  <div class="label">Control Videos</div>
+  <div class="control-buttons">
+    <button id="fusionBtn">Fusion</button>
+    <button id="fissionBtn">Fission</button>
+  </div>
+
+  <div id="control-fusion" class="video-container">
     <iframe src="https://www.youtube.com/embed/Bl_DnE48yRM" title="Control Fusion" allowfullscreen></iframe>
   </div>
-  <div class="video-container" style="display:block;">
+
+  <div id="control-fission" class="video-container">
     <iframe src="https://www.youtube.com/embed/DldJT74aJJ4" title="Control Fission" allowfullscreen></iframe>
   </div>
 </div>
 
-<!-- ===================== -->
-<!-- SECTION SWITCHING -->
-<!-- ===================== -->
 <script>
 const viewer = document.getElementById('viewer');
 const cisplatinSection = document.getElementById('cisplatin-section');
@@ -167,7 +171,10 @@ const cisBtn = document.getElementById('cisBtn');
 const ctrlBtn = document.getElementById('ctrlBtn');
 
 const tpButtonsDiv = document.getElementById('timepoint-buttons');
-const doseButtonsDiv = document.getElementById('buttons');
+const doseButtonsDiv = document.getElementById('dose-buttons');
+
+const fusionBtn = document.getElementById('fusionBtn');
+const fissionBtn = document.getElementById('fissionBtn');
 
 const timepoints = {
   "0HR": [
@@ -237,14 +244,31 @@ function renderDoseButtons() {
 
 function setModel(src, videoId) {
   viewer.src = src;
-  document.querySelectorAll('.video-container').forEach(v => v.style.display = 'none');
+  document.querySelectorAll('#cisplatin-section .video-container').forEach(v => v.style.display = 'none');
   document.getElementById(videoId).style.display = 'block';
 }
+
+// Control buttons
+fusionBtn.onclick = () => {
+  document.getElementById('control-fusion').style.display = 'block';
+  document.getElementById('control-fission').style.display = 'none';
+  fusionBtn.classList.add('active');
+  fissionBtn.classList.remove('active');
+};
+
+fissionBtn.onclick = () => {
+  document.getElementById('control-fission').style.display = 'block';
+  document.getElementById('control-fusion').style.display = 'none';
+  fissionBtn.classList.add('active');
+  fusionBtn.classList.remove('active');
+};
 
 // initial state
 cisBtn.classList.add("active");
 document.querySelectorAll('.timepoint-buttons button')[0].classList.add('active');
 renderDoseButtons();
+fusionBtn.classList.add('active');
+document.getElementById('control-fusion').style.display = 'block';
 </script>
 </body>
 </html>
