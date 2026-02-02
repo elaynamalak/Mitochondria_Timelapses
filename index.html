@@ -33,7 +33,6 @@
     margin: 18px 0 8px;
   }
 
-  /* BUTTON BASE */
   button {
     margin: 6px;
     padding: 12px 18px;
@@ -45,9 +44,8 @@
     cursor: pointer;
   }
 
-  /* ACTIVE BUTTON (VERY OBVIOUS) */
   button.active {
-    background-color: #2563eb; /* BLUE */
+    background-color: #2563eb; /* blue */
     color: white;
     border-color: #2563eb;
   }
@@ -162,7 +160,7 @@
     ]
   };
 
-  let currentTimepoint = "24HR";
+  let currentTimepoint = "0HR"; // START AT 0HR
 
   // CATEGORY BUTTONS
   cisBtn.onclick = () => {
@@ -178,7 +176,6 @@
     cisBtn.classList.remove("active");
     ctrlBtn.classList.add("active");
 
-    // Load control videos only when needed
     const container = document.getElementById("control-videos");
     if (!container.hasChildNodes()) {
       container.innerHTML = `
@@ -222,14 +219,12 @@
         setModel(m.src, m.video);
       };
 
-      if (i === 0) btn.classList.add("active");
+      if (i === 0) btn.classList.add("active"); // first dose active
       doseButtonsDiv.appendChild(btn);
     });
 
-    setModel(
-      timepoints[currentTimepoint][0].src,
-      timepoints[currentTimepoint][0].video
-    );
+    // Show first model and video by default
+    setModel(timepoints[currentTimepoint][0].src, timepoints[currentTimepoint][0].video);
   }
 
   function setModel(src, videoId) {
@@ -241,7 +236,7 @@
 
   // INITIAL STATE
   cisBtn.classList.add("active");
-  tpButtonsDiv.children[2].classList.add("active");
+  tpButtonsDiv.querySelector("button:first-child").classList.add("active"); // 0HR active
   renderDoseButtons();
 </script>
 
